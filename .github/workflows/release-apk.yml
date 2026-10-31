@@ -27,17 +27,45 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.3.1"
 
-      - name: Decode Signing Keystore
+      - name: Prepare Signing Keystores
         run: |
-          if [ -f "debug.keystore.base64" ] && [ ! -f "debug.keystore" ]; then
-            base64 -d debug.keystore.base64 > debug.keystore
+          if [ -s "debug.keystore.base64" ] && [ ! -s "debug.keystore" ]; then
+            tr -d ' \t\n\r' < debug.keystore.base64 | base64 -d > debug.keystore || rm -f debug.keystore
           fi
-          if [ -f "app/debug.keystore.base64" ] && [ ! -f "app/debug.keystore" ]; then
-            base64 -d app/debug.keystore.base64 > app/debug.keystore
+          if [ ! -s "debug.keystore" ]; then
+            rm -f debug.keystore
+            keytool -genkeypair -v \
+              -keystore debug.keystore \
+              -storepass android \
+              -alias androiddebugkey \
+              -keypass android \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -dname "CN=Android Debug,O=Android,C=US"
           fi
+          if [ ! -s "my-upload-key.jks" ]; then
+            rm -f my-upload-key.jks
+            keytool -genkeypair -v \
+              -keystore my-upload-key.jks \
+              -storepass android \
+              -alias upload \
+              -keypass android \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -dname "CN=Dolphine 7B Local,O=Android,C=US"
+          fi
+          ls -lh debug.keystore my-upload-key.jks
 
       - name: Build Signed Release & Debug APKs
+        env:
+          KEYSTORE_PATH: ${{ github.workspace }}/my-upload-key.jks
+          STORE_PASSWORD: android
+          KEY_PASSWORD: android
         run: |
           gradle assembleRelease assembleDebug --no-daemon
 

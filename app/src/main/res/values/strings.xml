@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Dolphine 7B Local</string>
+    <string name="drawer_title">ChatGPT</string>
+    <string name="hint_ask_chatgpt">Tanya ChatGPT</string>
+    <string name="header_subtitle">JNI (llama.cpp) Local Inference</string>
+    <string name="hint_type_message">Type a message...</string>
+    <string name="btn_send">Send</string>
+    <string name="btn_clear_chat">Clear Chat</string>
+    <string name="content_desc_menu">Open navigation drawer</string>
+    <string name="content_desc_new_chat">New Chat</string>
+    <string name="content_desc_search">Search history</string>
+    <string name="content_desc_attach">Add attachment</string>
+    <string name="content_desc_voice">Voice input</string>
+    <string name="content_desc_clear_chat">Clear Chat</string>
+    <string name="content_desc_send_message">Send message</string>
+    <string name="content_desc_app_icon">Dolphine 7B Local Icon</string>
+    <string name="status_loading_model">Loading model from /sdcard/...</string>
+    <string name="status_model_ready">Model Ready • Local JNI Active</string>
+    <string name="status_model_fallback">Native Runtime Active • /sdcard/dolphin-7b.gguf</string>
+    <string name="status_permission_required">Storage permission required for /sdcard/ model access</string>
+    <string name="status_generating">Generating response...</string>
+    <string name="status_context_cleared">Conversation history and AI context cleared.</string>
+    <string name="welcome_message">Dolphine 7B Local initialized. Place your GGUF model at /sdcard/dolphin-7b.gguf or start chatting below.</string>
+    <string name="role_user">YOU</string>
+    <string name="role_assistant">DOLPHINE 7B</string>
+</resources>

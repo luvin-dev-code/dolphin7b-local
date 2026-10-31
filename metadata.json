@@ -1,0 +1,6 @@
+{
+  "name": "Dolphine 7B Local",
+  "description": "Local AI Chat Android application powered by JNI (llama.cpp) backend with dynamic chat bubbles, context management, and GGUF model execution.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

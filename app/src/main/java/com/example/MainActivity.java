@@ -180,6 +180,26 @@ public class MainActivity extends Activity {
         }
     }
 
+    private File resolveModelFile(String preferredPath) {
+        String[] candidates = new String[]{
+                preferredPath != null ? preferredPath : DEFAULT_MODEL_PATH,
+                DEFAULT_MODEL_PATH,
+                "/storage/emulated/0/dolphin-7b.gguf",
+                new File(Environment.getExternalStorageDirectory(), "dolphin-7b.gguf").getAbsolutePath(),
+                "/sdcard/Download/dolphin-7b.gguf",
+                new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "dolphin-7b.gguf").getAbsolutePath()
+        };
+        for (String path : candidates) {
+            if (path != null) {
+                File f = new File(path);
+                if (f.exists() && f.isFile() && f.length() > 0) {
+                    return f;
+                }
+            }
+        }
+        return new File(preferredPath != null ? preferredPath : DEFAULT_MODEL_PATH);
+    }
+
     private void updateSettingsSummaryBadges() {
         String summary = String.format(
                 Locale.US,
@@ -194,10 +214,17 @@ public class MainActivity extends Activity {
         if (tvModelStatus != null && !isGenerating) {
             if (!hasStoragePermission()) {
                 tvModelStatus.setText(R.string.status_permission_required);
+            } else if (!LlamaEngine.isNativeLibraryLoaded()) {
+                tvModelStatus.setText("JNI Error • " + summary);
             } else if (modelPtr != 0L) {
                 tvModelStatus.setText("Ready • " + summary);
             } else {
-                tvModelStatus.setText("JNI Active • " + summary);
+                File modelFile = resolveModelFile(DEFAULT_MODEL_PATH);
+                if (modelFile.exists() && modelFile.isFile()) {
+                    tvModelStatus.setText("JNI Active • " + summary);
+                } else {
+                    tvModelStatus.setText("Model Missing • " + summary);
+                }
             }
         }
     }
@@ -718,7 +745,7 @@ public class MainActivity extends Activity {
                 long loadedPtr = 0L;
                 try {
                     applyNativeThreadEnvironment(configuredThreads);
-                    File modelFile = new File(modelPath);
+                    File modelFile = resolveModelFile(modelPath);
                     if (modelFile.exists() && modelFile.isFile() && modelFile.canRead()
                             && LlamaEngine.isNativeLibraryLoaded()) {
                         if (modelPtr != 0L) {
@@ -844,7 +871,7 @@ public class MainActivity extends Activity {
                 String generatedText = null;
 
                 try {
-                    File modelFile = new File(DEFAULT_MODEL_PATH);
+                    File modelFile = resolveModelFile(DEFAULT_MODEL_PATH);
                     if (LlamaEngine.isNativeLibraryLoaded()
                             && modelFile.exists() && modelFile.isFile() && modelFile.canRead()) {
                         if (modelPtr == 0L) {
@@ -955,29 +982,33 @@ public class MainActivity extends Activity {
     }
 
     private String buildLocalFallbackResponse(String prompt) {
-        File modelFile = new File(DEFAULT_MODEL_PATH);
+        File modelFile = resolveModelFile(DEFAULT_MODEL_PATH);
         boolean modelExists = modelFile.exists() && modelFile.isFile();
-        String lower = prompt.toLowerCase(Locale.US);
+        String errorDetail = LlamaEngine.getLoadError();
 
-        if (lower.contains("status") || lower.contains("model") || lower.contains("path")) {
-            String errorDetail = LlamaEngine.getLoadError();
-            return "Dolphine 7B Local JNI Engine Report:\n"
-                    + "• Target Path: " + DEFAULT_MODEL_PATH + "\n"
-                    + "• Model File Found: " + (modelExists ? "Yes" : "No (awaiting GGUF file in /sdcard/)") + "\n"
-                    + "• Native Library: libllama-android.so ("
-                    + (LlamaEngine.isNativeLibraryLoaded() ? "Loaded" : "Not Loaded") + ")\n"
-                    + (errorDetail != null ? "• JNI Load Error: " + errorDetail + "\n" : "")
-                    + "• Active Threads: " + configuredThreads + "\n"
-                    + "• Context Window: " + configuredContextWindow + " tokens\n"
-                    + "• Max Predict Tokens: " + configuredMaxPredict;
+        if (!LlamaEngine.isNativeLibraryLoaded()) {
+            return "Native JNI Error: libllama.so / libllama-android.so failed to load"
+                    + (errorDetail != null ? " (" + errorDetail + ")" : "")
+                    + ". Please install the updated APK release that includes all arm64-v8a native libraries.";
         }
 
-        return "[Dolphine 7B Local] Processed prompt on background ExecutorService ("
-                + configuredThreads + " threads, " + configuredContextWindow + " ctx, "
-                + configuredMaxPredict + " n_predict): \"" + prompt + "\". "
-                + (modelExists
-                ? "Model file detected at " + DEFAULT_MODEL_PATH + "."
-                : "Place your quantized GGUF model at " + DEFAULT_MODEL_PATH + " for full llama.cpp native weight execution.");
+        if (!modelExists) {
+            return "Model file not found at " + DEFAULT_MODEL_PATH
+                    + ". Please place your quantized GGUF model at /sdcard/dolphin-7b.gguf and ensure All Files Access permission is granted.";
+        }
+
+        if (modelPtr == 0L) {
+            return "Model file detected at " + modelFile.getAbsolutePath()
+                    + " (" + String.format(Locale.US, "%.2f GB", modelFile.length() / (1024.0 * 1024.0 * 1024.0))
+                    + "), but llama_model_load_from_file returned 0. Please verify that the file is a valid GGUF model and that your device has enough free RAM.";
+        }
+
+        return "Dolphine 7B Local JNI Engine Report:\n"
+                + "• Target Path: " + modelFile.getAbsolutePath() + "\n"
+                + "• Model Loaded in RAM: Yes\n"
+                + "• Active Threads: " + configuredThreads + "\n"
+                + "• Context Window: " + configuredContextWindow + " tokens\n"
+                + "• Max Predict Tokens: " + configuredMaxPredict;
     }
 
     private void scrollToBottom() {

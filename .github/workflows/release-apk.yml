@@ -30,6 +30,16 @@ jobs:
         with:
           gradle-version: "9.3.1"
 
+      - name: Verify Native JNI Libraries
+        run: |
+          ls -lh app/src/main/jniLibs/arm64-v8a/
+          for lib in libc++_shared.so libggml-base.so libggml-cpu.so libggml.so libllama.so libllama-android.so; do
+            if [ ! -s "app/src/main/jniLibs/arm64-v8a/$lib" ]; then
+              echo "Missing required native library: app/src/main/jniLibs/arm64-v8a/$lib"
+              exit 1
+            fi
+          done
+
       - name: Prepare Signing Keystores
         run: |
           if [ -s "debug.keystore.base64" ] && [ ! -s "debug.keystore" ]; then
@@ -76,6 +86,7 @@ jobs:
           DEBUG_APK=$(find app/build/outputs/apk/debug -name "*.apk" | head -n 1)
           if [ -n "$RELEASE_APK" ]; then
             cp "$RELEASE_APK" release-assets/Dolphine-7B-Local-release.apk
+            unzip -l release-assets/Dolphine-7B-Local-release.apk | grep "lib/arm64-v8a/"
           fi
           if [ -n "$DEBUG_APK" ]; then
             cp "$DEBUG_APK" release-assets/Dolphine-7B-Local-debug.apk

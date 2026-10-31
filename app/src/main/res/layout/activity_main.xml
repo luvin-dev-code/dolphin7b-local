@@ -3,19 +3,19 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@drawable/bg_main_gradient"
     android:fitsSystemWindows="true">
 
-    <!-- Main Content (Background #000000) -->
+    <!-- Main Content (Purple Gradient Theme) -->
     <LinearLayout
         android:id="@+id/rootContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000000"
+        android:background="@drawable/bg_main_gradient"
         android:orientation="vertical"
         android:padding="12dp">
 
-        <!-- Top Header: Hamburger menu icon (left) and New Chat icon (right) -->
+        <!-- Top Header: Hamburger menu icon (left) and New Chat icon (right) — No Settings icon on main screen -->
         <LinearLayout
             android:id="@+id/toolbarHeader"
             android:layout_width="match_parent"
@@ -49,7 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/app_name"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#F5F3FF"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -61,7 +61,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="@string/status_loading_model"
-                    android:textColor="#9E9E9E"
+                    android:textColor="#C084FC"
                     android:textSize="11sp" />
             </LinearLayout>
 
@@ -76,18 +76,68 @@
                 android:src="@drawable/ic_new_chat" />
         </LinearLayout>
 
-        <!-- Center: Chat RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewChat"
+        <!-- Center: Chat Area (Shows centered transparent APK logo + English text when empty, or Chat RecyclerView when messages exist) -->
+        <FrameLayout
+            android:id="@+id/chatAreaContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:clipToPadding="false"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:scrollbars="vertical" />
+            android:layout_weight="1">
 
-        <!-- Bottom Input: Pill-shaped layout (corner radius 24dp, background #212121) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewChat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:scrollbars="vertical" />
+
+            <!-- Empty / New Chat Centered State: Transparent App Logo + English Text Below -->
+            <LinearLayout
+                android:id="@+id/emptyChatWelcomeContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <ImageView
+                    android:id="@+id/ivEmptyChatLogo"
+                    android:layout_width="112dp"
+                    android:layout_height="112dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/content_desc_app_icon"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/img_app_logo_transparent" />
+
+                <TextView
+                    android:id="@+id/tvEmptyChatTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:gravity="center"
+                    android:text="@string/empty_chat_title"
+                    android:textColor="#F5F3FF"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvEmptyChatSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:lineSpacingExtra="3dp"
+                    android:maxWidth="280dp"
+                    android:text="@string/empty_chat_subtitle"
+                    android:textColor="#C4B5FD"
+                    android:textSize="13sp" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- Bottom Input: Pill-shaped layout with Purple Gradient Theme -->
         <LinearLayout
             android:id="@+id/inputBarContainer"
             android:layout_width="match_parent"
@@ -118,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:hint="@string/hint_ask_chatgpt"
+                android:hint="@string/hint_ask_libllam"
                 android:imeOptions="actionSend"
                 android:importantForAutofill="no"
                 android:inputType="textCapSentences|textMultiLine"
@@ -128,8 +178,8 @@
                 android:paddingTop="10dp"
                 android:paddingEnd="8dp"
                 android:paddingBottom="10dp"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#9E9E9E"
+                android:textColor="#F5F3FF"
+                android:textColorHint="#A78BFA"
                 android:textSize="15sp" />
 
             <ImageButton
@@ -156,35 +206,50 @@
 
     </LinearLayout>
 
-    <!-- Sidebar Drawer (Gravity: start, Background #171717, Width 300dp) -->
+    <!-- Sidebar Drawer: Chat Session History (Purple Gradient Theme, Width 310dp) -->
     <LinearLayout
         android:id="@+id/sidebarDrawer"
-        android:layout_width="300dp"
+        android:layout_width="310dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#171717"
+        android:background="@drawable/bg_main_gradient"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Drawer Header: TextView "ChatGPT" (White, Bold, 20sp) with Search and New Chat circular icons -->
+        <!-- Drawer Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingBottom="12dp">
+            android:paddingBottom="10dp">
 
-            <TextView
-                android:id="@+id/tvDrawerTitle"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/drawer_title"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvDrawerTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/drawer_title"
+                    android:textColor="#F5F3FF"
+                    android:textSize="19sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvDrawerSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/drawer_sessions_subtitle"
+                    android:textColor="#C084FC"
+                    android:textSize="11sp" />
+            </LinearLayout>
 
             <ImageButton
                 android:id="@+id/btnDrawerSearch"
@@ -208,20 +273,111 @@
                 android:src="@drawable/ic_new_chat" />
         </LinearLayout>
 
+        <!-- Optional Search Filter Bar inside Drawer -->
+        <EditText
+            android:id="@+id/editDrawerSearch"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_chip_preset"
+            android:hint="@string/hint_search_sessions"
+            android:imeOptions="actionSearch"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="#F5F3FF"
+            android:textColorHint="#A78BFA"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
-            android:background="#262626" />
+            android:layout_marginBottom="10dp"
+            android:background="#3E236E" />
 
-        <!-- Drawer Content: RecyclerView for chat history -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewHistory"
+        <!-- Middle Flexible Container: Always fills remaining vertical height so Settings stays pinned at the very bottom -->
+        <FrameLayout
+            android:id="@+id/drawerHistoryContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:clipToPadding="false"
-            android:scrollbars="vertical" />
+            android:layout_weight="1">
+
+            <!-- Drawer Content: RecyclerView for Chat Session History -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewHistory"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:scrollbars="vertical" />
+
+            <!-- Empty Session History State (Centered inside the flexible middle area) -->
+            <TextView
+                android:id="@+id/tvEmptyHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/empty_session_history"
+                android:textColor="#A78BFA"
+                android:textSize="13sp"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="10dp"
+            android:background="#3E236E" />
+
+        <!-- Drawer Footer: Inference & RAM Settings Button -->
+        <LinearLayout
+            android:id="@+id/btnDrawerSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_chip_preset"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:minHeight="52dp"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:contentDescription="@string/content_desc_settings"
+                android:src="@drawable/ic_settings" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/drawer_settings_button"
+                    android:textColor="#F5F3FF"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvDrawerSettingsSummary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/drawer_settings_summary_default"
+                    android:textColor="#C084FC"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

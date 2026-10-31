@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="bg_gradient_start">#FF0B1120</color>
-    <color name="bg_gradient_center">#FF090D16</color>
-    <color name="bg_gradient_end">#FF04060A</color>
-    <color name="surface_card">#FF131C2E</color>
-    <color name="surface_user_bubble">#FF1E293B</color>
-    <color name="surface_ai_bubble">#FF111827</color>
-    <color name="border_subtle">#FF26334D</color>
-    <color name="text_primary">#FFEEEEEE</color>
-    <color name="text_placeholder">#FF9CA3AF</color>
-    <color name="accent_orange">#FFF97316</color>
-    <color name="accent_orange_dark">#FFEA580C</color>
-    <color name="accent_orange_surface">#26F97316</color>
+    <color name="bg_gradient_start">#FF160B28</color>
+    <color name="bg_gradient_center">#FF0D0618</color>
+    <color name="bg_gradient_end">#FF06030B</color>
+    <color name="surface_card">#FF1B1030</color>
+    <color name="surface_user_bubble">#FF3B1A6E</color>
+    <color name="surface_ai_bubble">#FF170D2A</color>
+    <color name="border_subtle">#FF3E236E</color>
+    <color name="text_primary">#FFF5F3FF</color>
+    <color name="text_placeholder">#FFA78BFA</color>
+    <color name="accent_orange">#FFC084FC</color>
+    <color name="accent_orange_dark">#FF7E22CE</color>
+    <color name="accent_orange_surface">#33A855F7</color>
+    <color name="accent_purple">#FF9333EA</color>
+    <color name="accent_purple_light">#FFD8B4FE</color>
+    <color name="danger_red">#FFF43F5E</color>
     <color name="status_online">#FF10B981</color>
 </resources>

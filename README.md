@@ -38,7 +38,7 @@ Conversation states are automatically committed to an on-device SQLite database,
 
 ## System Requirements
 
-Before deploying the release **APK** from **GitHub Releases**, verify that the target device satisfies the hardware constraints required to sustain a 7B parameter model in memory:
+**Vverify that your device** meets the hardware constraints required to sustain a 7B parameter model in memory:
 
 | Subsystem | Minimum Baseline | Recommended Target |
 | :--- | :--- | :--- |

@@ -1,6 +1,0 @@
-{
-  "summary":  "Implementation plan to convert all UI strings, dynamic dialogs, date formats, and status messages of Dolphine 7B Local to 100% English, and fix the Sidebar Drawer layout so the Inference & RAM Settings button stays permanently pinned at the very bottom.",
-  "updatedAt":  "2026-10-31T12:49:39.768911061Z",
-  "requestFeedback":  true,
-  "userFacing":  true
-}

@@ -400,7 +400,6 @@ public class MainActivity extends Activity {
         final int maxCores = Math.max(1, Runtime.getRuntime().availableProcessors());
         seekBarThreads.setMax(Math.max(0, maxCores - 1));
 
-        // Read actual device RAM via ActivityManager
         ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
         if (activityManager != null) {
@@ -432,14 +431,11 @@ public class MainActivity extends Activity {
                 maxCores
         ));
 
-        // Free custom sliders:
-        // Context window: 128 to 4096 in steps of 64 (progress 0..62)
         seekBarThreads.setProgress(Math.min(maxCores - 1, Math.max(0, configuredThreads - 1)));
         seekBarContextWindow.setMax(62);
         int ctxProgress = Math.max(0, Math.min(62, (configuredContextWindow - 128) / 64));
         seekBarContextWindow.setProgress(ctxProgress);
 
-        // Predict tokens: 16 to 512 in steps of 16 (progress 0..31)
         seekBarPredictTokens.setMax(31);
         int predictProgress = Math.max(0, Math.min(31, (configuredMaxPredict - 16) / 16));
         seekBarPredictTokens.setProgress(predictProgress);
@@ -822,7 +818,6 @@ public class MainActivity extends Activity {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                // 1. Automatically create or update the Chat Session in SQLite database
                 long sessionId = currentSessionId;
                 if (sessionId <= 0L) {
                     sessionId = dbHelper.createSession(userText, promptTimestampMillis);
@@ -831,7 +826,6 @@ public class MainActivity extends Activity {
                     dbHelper.updateSessionLastPrompt(sessionId, promptTimestampMillis);
                 }
 
-                // Save user message to SQLite database
                 dbHelper.insertMessage(
                         sessionId,
                         true,
@@ -874,7 +868,6 @@ public class MainActivity extends Activity {
                     generatedText = buildLocalFallbackResponse(userText);
                 }
 
-                // Save turn in memory for multi-turn context
                 String completedTurn = "<|im_start|>user\n"
                         + userText
                         + "<|im_end|>\n<|im_start|>assistant\n"
@@ -887,7 +880,6 @@ public class MainActivity extends Activity {
                     }
                 }
 
-                // Save AI response to SQLite database in the same session
                 final ChatAdapter.ChatMessage aiMsgObj = new ChatAdapter.ChatMessage(generatedText, false);
                 dbHelper.insertMessage(
                         sessionId,

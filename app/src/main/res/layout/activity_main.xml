@@ -6,7 +6,6 @@
     android:background="@drawable/bg_main_gradient"
     android:fitsSystemWindows="true">
 
-    <!-- Main Content (Purple Gradient Theme) -->
     <LinearLayout
         android:id="@+id/rootContainer"
         android:layout_width="match_parent"
@@ -15,7 +14,6 @@
         android:orientation="vertical"
         android:padding="12dp">
 
-        <!-- Top Header: Hamburger menu icon (left) and New Chat icon (right) — No Settings icon on main screen -->
         <LinearLayout
             android:id="@+id/toolbarHeader"
             android:layout_width="match_parent"
@@ -76,7 +74,6 @@
                 android:src="@drawable/ic_new_chat" />
         </LinearLayout>
 
-        <!-- Center: Chat Area (Shows centered transparent APK logo + English text when empty, or Chat RecyclerView when messages exist) -->
         <FrameLayout
             android:id="@+id/chatAreaContainer"
             android:layout_width="match_parent"
@@ -92,7 +89,6 @@
                 android:paddingBottom="8dp"
                 android:scrollbars="vertical" />
 
-            <!-- Empty / New Chat Centered State: Transparent App Logo + English Text Below -->
             <LinearLayout
                 android:id="@+id/emptyChatWelcomeContainer"
                 android:layout_width="match_parent"
@@ -137,7 +133,6 @@
             </LinearLayout>
         </FrameLayout>
 
-        <!-- Bottom Input: Pill-shaped layout with Purple Gradient Theme -->
         <LinearLayout
             android:id="@+id/inputBarContainer"
             android:layout_width="match_parent"
@@ -206,7 +201,6 @@
 
     </LinearLayout>
 
-    <!-- Sidebar Drawer: Chat Session History (Purple Gradient Theme, Width 310dp) -->
     <LinearLayout
         android:id="@+id/sidebarDrawer"
         android:layout_width="310dp"
@@ -218,7 +212,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Drawer Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -273,7 +266,6 @@
                 android:src="@drawable/ic_new_chat" />
         </LinearLayout>
 
-        <!-- Optional Search Filter Bar inside Drawer -->
         <EditText
             android:id="@+id/editDrawerSearch"
             android:layout_width="match_parent"
@@ -298,14 +290,12 @@
             android:layout_marginBottom="10dp"
             android:background="#3E236E" />
 
-        <!-- Middle Flexible Container: Always fills remaining vertical height so Settings stays pinned at the very bottom -->
         <FrameLayout
             android:id="@+id/drawerHistoryContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <!-- Drawer Content: RecyclerView for Chat Session History -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewHistory"
                 android:layout_width="match_parent"
@@ -313,7 +303,6 @@
                 android:clipToPadding="false"
                 android:scrollbars="vertical" />
 
-            <!-- Empty Session History State (Centered inside the flexible middle area) -->
             <TextView
                 android:id="@+id/tvEmptyHistory"
                 android:layout_width="match_parent"
@@ -334,7 +323,6 @@
             android:layout_marginBottom="10dp"
             android:background="#3E236E" />
 
-        <!-- Drawer Footer: Inference & RAM Settings Button -->
         <LinearLayout
             android:id="@+id/btnDrawerSettings"
             android:layout_width="match_parent"

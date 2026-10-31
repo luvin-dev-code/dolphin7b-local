@@ -12,7 +12,6 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- Header Row (Without Auto RAM or Quick Performance Presets) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,7 +36,6 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- Device RAM & CPU Telemetry Card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,7 +89,6 @@
                 android:textSize="11sp" />
         </LinearLayout>
 
-        <!-- 1. CPU Thread Count Control -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -136,7 +133,6 @@
             android:progressTint="#A855F7"
             android:thumbTint="#E879F9" />
 
-        <!-- 2. Context Window Size Control (n_ctx: Custom Free Slider 128 - 4096) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -182,7 +178,6 @@
             android:progressTint="#A855F7"
             android:thumbTint="#E879F9" />
 
-        <!-- 3. Max Output Tokens per Reply (n_predict: Custom Free Slider 16 - 512) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -227,7 +222,6 @@
             android:progressTint="#A855F7"
             android:thumbTint="#E879F9" />
 
-        <!-- 4. Multi-Turn Context Retention Switch -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -270,7 +264,6 @@
                 android:trackTint="#4C2882" />
         </LinearLayout>
 
-        <!-- Action Buttons Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
